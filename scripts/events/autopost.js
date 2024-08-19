@@ -1,6 +1,6 @@
 const cron = require('node-cron');
 const axios = require('axios');
-const prefix = . Your bot's prefix
+const prefix = '.';
 const botName = 'Nics Bot';
 const ownerName = 'ADAJAR';
 
