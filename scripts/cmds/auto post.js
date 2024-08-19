@@ -30,3 +30,53 @@ function startAutopost(api) {
     }
   }, 20 * 60 * 1000); // Every 20 minutes
 }
+
+function stopAutopost() {
+  if (intervalId) {
+    clearInterval(intervalId);
+    intervalId = null;
+  }
+}
+
+module.exports = {
+  config: {
+    name: 'autopost',
+    author: 'Ron Zedric Laurente', // Convert By Goatbot Zed
+    role: 2,
+    shortDescription: 'Automatically post Bible verses at specified intervals.',
+    longDescription: 'This command allows users to toggle automatic posting of Bible verses at 20-minute intervals.',
+    category: 'owner',
+    guide: {
+      en: '{pn}autopost [on|off]'
+    }
+  },
+
+  onStart: async function ({ api, event }) {
+    // Initialize the command, ensuring autopost is not started by default
+    autopostState = false;
+    startAutopost(api);
+    api.sendMessage(`Autopost system initialized. Use ${prefix}autopost on or ${prefix}autopost off to toggle the feature.`, event.threadID);
+  },
+
+  onChat: async function ({ api, event, args }) {
+    const command = args[0]?.toLowerCase();
+
+    if (command === 'on') {
+      if (autopostState) {
+        return api.sendMessage('Autopost is already active.', event.threadID);
+      }
+      autopostState = true;
+      startAutopost(api);
+      api.sendMessage('Autopost has been enabled.', event.threadID);
+    } else if (command === 'off') {
+      if (!autopostState) {
+        return api.sendMessage('Autopost is not active.', event.threadID);
+      }
+      autopostState = false;
+      stopAutopost();
+      api.sendMessage('Autopost has been disabled.', event.threadID);
+    } else {
+      api.sendMessage(`Invalid command. Use ${prefix}autopost on to enable or ${prefix}autopost off to disable.`, event.threadID);
+    }
+  }
+};
