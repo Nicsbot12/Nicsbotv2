@@ -138,7 +138,6 @@
     "updatePresence": true,
     "listenTyping": true,
     "logLevel": "error",
-    "autoCreateDB": false,
     "selfListen": false,
     "selfListenEvent": true,
     "autoMarkDelivery": false,
